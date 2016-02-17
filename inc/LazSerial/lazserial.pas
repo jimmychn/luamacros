@@ -144,6 +144,7 @@ type
     // read data from port
     function DataAvailable: boolean;
     function ReadData: string;
+    function ReadByte(timeouts: integer): char;
 //    function ReadBuffer(var buf; size: integer): integer;
 
     // write data to port
@@ -295,6 +296,14 @@ begin
   result:=FSynSer.RecvString(0)
   else
   result:=FSynSer.RecvPacket(0);
+end;
+
+function TLazSerial.ReadByte(timeouts:integer): char;
+begin
+  result:='';
+  if FSynSer.Handle=INVALID_HANDLE_VALUE then
+    ComException('can not read from a closed port.');
+  result:=FSynSer.RecvByte(timeouts)
 end;
 
 procedure TLazSerial.SetActive(state: boolean);
